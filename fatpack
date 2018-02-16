@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Perl 5.26 no longer includes the current directory in the module search path
+# which breaks tests for about a million modules. This setting restores it,
+# just while we install things. cpm is supposed to do this itself, but it
+# doesn't (yet).
+export PERL_USE_UNSAFE_INC=1
+
+# Pull cpm from github. There will now be a fatpacked binary in cpm/cpm.
+git submodule update --init
+
+perl cpm/cpm install -L local --target-perl 5.14.0 --with-develop --without-test || exit 1
+
+export PERL5LIB=$PWD/lib:$PWD/local/lib/perl5
+export PATH=$PWD/local/bin:$PATH
+
+export PERL_JSON_BACKEND=JSON::PP
+export B_HOOKS_ENDOFSCOPE_IMPLEMENTATION=PP
+export PACKAGE_STASH_IMPLEMENTATION=PP
+export PARAMS_VALIDATE_IMPLEMENTATION=PP
+export LIST_MOREUTILS_PP=1
+export MOO_XS_DISABLE=1
+
+perl -c swr.pl || exit 1
+
+trap 'rm -rf .build fatlib fatpacker.trace fatpacker.trace.bak packlists' EXIT
+fatpack trace swr.pl || exit 1
+fatpack packlists-for $(cat fatpacker.trace) > packlists || exit 1
+fatpack tree $(cat packlists) || exit 1
+rm -rf fatlib/$(perl -MConfig -e 'print $Config{archname}')
+find fatlib -name \*.pod -delete
+find fatlib -name \*.pl -delete
+find fatlib -type f -exec perlstrip {} +
+fatpack file swr.pl > swr
+chmod +x swr
