@@ -1,3 +1,8 @@
+## swr
+
+Is a program for driving the EA4FRB SARK100 antenna analyzer (also sold as the
+LXQQFY MR300 or KKmoon MR300) and making pretty graphs.
+
 ## To run
 
 * Connect the meter, put it in PC Link mode, and find out what port it's on.
