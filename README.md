@@ -7,9 +7,10 @@ LXQQFY MR300 or KKmoon MR300) and making pretty graphs.
 
 ## To run
 
+* Make sure `gnuplot` is installed.
 * Connect the meter, put it in PC Link mode, and find out what port it's on.
 * Run `swr --port /dev/whatever --start 14000 --end 15000`
-* `gnuplot swr.png`
+* Look at `swr.png`.
 
 (There are many more options, run `swr --help` to see them).
 
