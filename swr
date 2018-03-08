@@ -345,7 +345,7 @@ my @BANDS = (
 option 'start' => (
   is => 'ro',
   format => 'f',
-  desc => 'Starting frequency',
+  doc => 'Starting frequency',
   forrmat_doc => 'kHz',
   default => 1700,
 );
@@ -358,7 +358,7 @@ has 'start_hz' => (
 option 'end' => (
   is => 'ro',
   format => 'f',
-  desc => 'Ending frequency',
+  doc => 'Ending frequency',
   format_doc => 'kHz',
   default => 54000,
 );
@@ -371,7 +371,7 @@ has 'end_hz' => (
 option 'step' => (
   is => 'ro',
   format => 'f',
-  desc => 'Frequency step',
+  doc => 'Frequency step',
   format_doc => 'kHz',
   spacer_below => 1,
   default => 10,
@@ -384,14 +384,14 @@ has 'step_hz' => (
 
 option 'bands' => (
   is => 'ro',
-  desc => 'Highlight amateur bands',
+  doc => 'Highlight amateur bands',
   default => 1,
   negatable => 1,
 );
 
 option 'warc' => (
   is => 'ro',
-  desc => 'Include WARC bands',
+  doc => 'Include WARC bands',
   default => 1,
   negatable => 1,
   spacer_below => 1,
@@ -399,28 +399,28 @@ option 'warc' => (
 
 option 'width' => (
   is => 'ro',
-  desc => 'Graph width',
+  doc => 'Graph width',
   format => 'i',
   default => 1280,
 );
 
 option 'height' => (
   is => 'ro',
-  desc => 'Graph height',
+  doc => 'Graph height',
   format => 'i',
   default => 720,
 );
 
 option 'font' => (
   is => 'ro',
-  desc =>  'Font',
+  doc =>  'Font',
   format => 's',
   default => 'sans,16',
 );
 
 option 'threshold' => (
   is => 'ro',
-  desc => 'Plot horizontal lines',
+  doc => 'Plot horizontal lines',
   format => 'f',
   format_doc => 'SWR',
   repeatable =>  1,
@@ -430,22 +430,24 @@ option 'threshold' => (
 
 option 'maxswr' => (
   is => 'ro',
-  desc => 'Maximum SWR for top of graph',
+  doc => 'Maximum SWR for top of graph',
   format => 'f',
   format_doc =>'SWR',
 );
 
 option 'smooth' => (
   is => 'ro',
-  desc => 'Smoothing',
+  doc => 'Smoothing',
   format => 's',
   spacer_below => 1,
 );
 
 option 'portname' => (
   is => 'ro',
-  desc => 'Serial port to use',
+  doc => 'Serial port to use',
+  option => 'port',
   short => 'p',
+  format => 's',
   default => '/dev/ttyUSB1',
 );
 
@@ -455,7 +457,7 @@ has 'port' => (
 
 option 'name' => (
   is => 'ro',
-  desc => 'Output filename base',
+  doc => 'Output filename base',
   format => 's',
   default => 'swr',
 );
