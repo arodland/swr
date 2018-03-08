@@ -153,7 +153,7 @@ sub _build_port {
   if (!$pid) { # child
     open(STDIN, '<&', $fh) or die "$! dup'ing stdin\n";
     open(STDOUT, '>&', $fh) or die "$! dup'ing stdout\n";
-    exec('stty', '57600', 'cs8', '-cstopb', '-parenb', '-echo'); # 57600 8N1 no local echo
+    exec('stty', '57600', 'cs8', '-cstopb', '-parenb', '-echo', '-icrnl', '-onlcr'); # 57600 8N1 no local echo
   }
   wait;
   die "stty returned status $?\n" if $? > 0;
