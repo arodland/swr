@@ -127,7 +127,9 @@ option 'smooth' => (
 option 'portname' => (
   is => 'ro',
   doc => 'Serial port to use',
+  option => 'port',
   short => 'p',
+  format => 's',
   default => '/dev/ttyUSB1',
 );
 
