@@ -165,6 +165,7 @@ sub acquire_data {
 
   my $port = $self->port;
   open my $out, '>', $self->name . '.txt' or die "$! opening " . $self->name . '.txt';
+  $out->autoflush(1);
 
   printf $port "scan %d %d %d\r\n", $self->start_hz, $self->end_hz + $self->step_hz, $self->step_hz;
   my $freq = $self->start_hz;
