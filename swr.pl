@@ -183,7 +183,7 @@ sub acquire_data {
     next unless $started;
     my ($swr, $r, $x, $z) = split ",", $line;
     print $out "$freq\t$swr\t$r\t$x\t$z\n";
-    print STDERR $progress->report("\rAcquiring data [%40b] %p ETA %E    \b\b\b\b", $freq);
+    print STDERR $progress->report("\rAcquiring data [%40b] %p ETA %E " . int($freq/1000) . "kHz SWR: " . sprintf("%.2f", $swr) . "    \b\b\b\b", $freq);
     $freq += $self->step_hz;
   }
   print STDERR "\n";
