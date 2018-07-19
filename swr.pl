@@ -124,6 +124,12 @@ option 'smooth' => (
   spacer_below => 1,
 );
 
+option 'reactance_color' => (
+  is => 'ro',
+  doc => 'Color the plot according to reactance',
+  default => 0,
+);
+
 option 'portname' => (
   is => 'ro',
   doc => 'Serial port to use',
@@ -221,6 +227,14 @@ sub gen_plotfile {
     }
   }
 
+  if ($self->reactance_color) {
+    print $out <<EOF;
+set palette defined (-100 "light-red", -10 "dark-red", 0 "black", 10 "dark-blue", 100 "web-blue") 
+set cbrange [-100:100]
+unset colorbox
+EOF
+  }
+
   print $out "set terminal pngcairo enhanced size ", $self->width, ",", $self->height, qq{ font "}, $self->font, qq{"\n};
   print $out qq{set output "} . $self->name . qq{.png"\n};
 
@@ -245,9 +259,16 @@ EOF
   if ($self->maxswr) {
     print $out $self->maxswr;
   }
-  print $out qq{] "} . $self->name . qq{.txt" using 1:2 with lines ti "SWR"};
+  print $out qq{] "} . $self->name . qq{.txt" using 1:2};
+  if ($self->reactance_color) {
+    print $out qq{:4};
+  }
+  print out qq{ with lines ti "SWR"};
   if ($self->smooth) {
     print $out " smooth ", $self->smooth;
+  }
+  if ($self->reactance_color) {
+    print $out qq{lc palette }
   }
   print $out "\n";
 }
