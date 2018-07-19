@@ -189,7 +189,7 @@ sub acquire_data {
   print STDERR "\n";
 }
 
-sub gen_swrplot {
+sub gen_plotfile {
   my ($self) = @_;
 
   open my $out, '>', $self->name . '.gnuplot' or die "$! opening ". $self->name . ".gnuplot\n";
@@ -236,13 +236,19 @@ EOF
     print $out " smooth ", $self->smooth;
   }
   print $out "\n";
+}
+
+sub run_gnuplot {
+  my ($self) = @_;
+
   system("gnuplot", $self->name . ".gnuplot");
 }
 
 sub run {
   my ($self) = @_;
+  $self->gen_plotfile;
   $self->acquire_data;
-  $self->gen_swrplot;
+  $self->run_gnuplot;
 }
 
 package main;
