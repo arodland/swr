@@ -144,6 +144,13 @@ option 'name' => (
   default => 'swr',
 );
 
+option 'update' => (
+  is => 'ro',
+  doc => 'Graph update interval while acquisition is in progress',
+  format => 's',
+  default => 0
+);
+
 sub _build_port {
   my ($self) = @_;
 
@@ -171,6 +178,7 @@ sub acquire_data {
   my $freq = $self->start_hz;
   my $started;
   my $progress = Time::Progress->new(min => $self->start_hz, max => $self->end_hz);
+  my $last_plotted;
 
   while (my $line = <$port>) {
     $line =~ s/\r?\n\z//;
@@ -178,6 +186,7 @@ sub acquire_data {
     if ($line eq 'Start') {
       $started = 1;
       $progress->restart;
+      $last_plotted = time;
       next;
     }
     next unless $started;
@@ -185,6 +194,11 @@ sub acquire_data {
     print $out "$freq\t$swr\t$r\t$x\t$z\n";
     print STDERR $progress->report("\rAcquiring data [%40b] %p ETA %E " . int($freq/1000) . "kHz SWR: " . sprintf("%.2f", $swr) . "    \b\b\b\b", $freq);
     $freq += $self->step_hz;
+    my $now = time;
+    if ($self->update && $now >= $last_plotted + $self->update) {
+      $self->run_gnuplot;
+      $last_plotted = $now;
+    }
   }
   print STDERR "\n";
 }
